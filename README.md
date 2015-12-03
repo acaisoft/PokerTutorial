@@ -7,7 +7,7 @@ Adam Nowaczyk ([adam.nowaczyk@acaisoft.com](mailto:adam.nowaczy@acaisoft.com))
 
 <a href="http://acaisoft.com" target="_blank">http://acaisoft.com</a>
 
-<a href="https://github.com/Acaisoft/Poker" target="_blank">https://github.com/Acaisoft/Poker</a>
+<a href="https://github.com/Acaisoft/PokerTutorial" target="_blank">https://github.com/Acaisoft/PokerTutorial</a>
 
 # Step 2
 

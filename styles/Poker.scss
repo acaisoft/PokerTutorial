@@ -1,5 +1,125 @@
-.welcome {
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+#app {
+  font-weight: bold;
+}
+
+.center {
+  width: 700px;
+  padding-top: 200px;
   margin: auto;
-  width: 500px;
   text-align: center;
+}
+
+.svg-card {
+  width: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+$suits: ('H', 'D', 'C', 'S');
+$ranks: (2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A');
+
+#board {
+  position: relative;
+  background: url('../images/poker-table-big.jpg') no-repeat;
+  width: 1274px;
+  height: 716px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.table {
+  position: absolute;
+  top: 300px;
+  left: 500px;
+}
+
+.player {
+  position: absolute;
+  white-space: nowrap;
+
+  .name {
+    color: #fff;
+  }
+
+  .result {
+    display: inline-block;
+    font-family: Helvetica;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #f00;
+    text-transform: uppercase;
+
+    //li {
+    //  list-style: none;
+    //}
+
+    &.winner {
+      color: #0f0;
+    }
+  }
+
+  &._1 {
+    top: -100px;
+    left: 550px;
+  }
+  &._2 {
+    top: 270px;
+    left: 1270px;
+    .result {
+      display: block;
+    }
+  }
+  &._3 {
+    top: 620px;
+    left: 550px;
+  }
+  &._4 {
+    top: 270px;
+    left: -150px;
+    .result {
+      display: block;
+    }
+  }
+
+}
+
+.card {
+  background: url('../images/poker-cards.gif') no-repeat;
+  width: 82px;
+  height: 118px;
+  background-position: 0 -468px;
+  display: inline-block;
+
+  @for $j from 0 through 3 {
+    @for $i from 0 through 12 {
+      $suit: nth($suits, $j+1);
+      $rank: nth($ranks, $i+1);
+      &._#{$rank}#{$suit} {
+        background-position-x: -81px*$i;
+        background-position-y: -117px*$j;
+      }
+    }
+  }
+
+}
+
+#score {
+  font-size: 14px;
+  color: #fff;
+}
+
+.tables {
+  border: 1px solid white;
+
+  th {
+    font-weight: bold;
+  }
+
+  td {
+  }
 }

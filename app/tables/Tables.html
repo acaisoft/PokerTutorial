@@ -1,0 +1,23 @@
+<h1>Hello, {{tc.username}}</h1>
+
+<button ng-click="tc.newTable()" ng-if="!tc.alreadyHasTable()">New Table</button>
+
+<table class="tables">
+    <thead>
+    <tr>
+        <th>Owner</th>
+        <th>Players</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="table in tc.tables">
+        <td>{{table.owner}}</td>
+        <td>{{table.players}}</td>
+        <td>
+            <button ng-click="tc.play($index)">Play</button>
+            <button ng-click="tc.join($index)" ng-if="!tc.alreadyJoined($index)">Join</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

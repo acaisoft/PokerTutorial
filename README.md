@@ -9,20 +9,23 @@ Adam Nowaczyk ([adam.nowaczyk@acaisoft.com](mailto:adam.nowaczy@acaisoft.com))
 
 <a href="https://github.com/Acaisoft/Poker" target="_blank">https://github.com/Acaisoft/Poker</a>
 
-# Step 2
+# Description
+
+Please go through branches from step-1 to step-4 to better understand the application.
+
+# Requirements
+
+* Install NodeJS: [https://nodejs.org](https://nodejs.org)
 
 # Installation
 
-1. `git checkout -b step-4 origin/step-4`
-1. `git pull`
+1. `npm install gulp -g`
+1. `npm install tsd -g`
+1. `git clone https://github.com/Acaisoft/PokerTutorial`
+1. `cd PokerTutorial` 
+1. `npm install`
+1. `tsd install`
 
 # Running
 
 1. `gulp dev:run`
-
-# Description
-
-We created /app/game folder containing main Poker logic, models and behaviors. User creating the table will be driving the game (dealing cards). 
-Other users can just watch, sorry :D.
-
-Whole communication is instant thanks to the WebSockets and events flowing between the browser connections.

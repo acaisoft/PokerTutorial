@@ -3,7 +3,7 @@ module Login {
     export class LoginService {
         private _username:string;
 
-        constructor(private $window:ng.IWindowService) {
+        constructor(private $window:ng.IWindowService, private $ws:WS.WebsocketService) {
             this._username = this.isAuthenticated ? this.$window.sessionStorage.getItem('username') : null;
         }
 
@@ -17,6 +17,7 @@ module Login {
 
         login(username:string) {
             this._username = username;
+            this.$ws.login(this._username);
         }
 
     }

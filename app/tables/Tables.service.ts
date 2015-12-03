@@ -3,9 +3,12 @@ module Tables {
     export class TablesService {
         public tables:Table[];
 
-        constructor(private $rootScope:ng.IRootScopeService, private $http:ng.IHttpService) {
+        constructor(private $rootScope:ng.IRootScopeService, private $http:ng.IHttpService, private $ws:WS.WebsocketService) {
             this.tables = [];
 
+            ['TABLE.CREATE', 'TABLE.JOIN'].forEach((event) => $rootScope.$on(event, () => {
+                this.get();
+            }));
             this.get();
         }
 
@@ -18,9 +21,22 @@ module Tables {
         }
 
         create() {
+            this.$ws.send({
+                type: 'COMMAND',
+                command: 'TABLE.CREATE',
+                data: {
+                }
+            });
         }
 
         join(tableId:number) {
+            this.$ws.send({
+                type: 'COMMAND',
+                command: 'TABLE.JOIN',
+                data: {
+                    tableId: tableId
+                }
+            });
         }
 
     }

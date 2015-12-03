@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     sass = require('gulp-sass'),
     path = require('path'),
+    sockjs = require('sockjs'),
     express = require('express');
 
 var paths = {
@@ -81,8 +82,115 @@ gulp.task('dev:run', ['dev:build:templates', 'dev:build:scripts', 'dev:build:sty
     app.use('/app', express.static('app'));
     app.use(express.static('static'));
 
+    var tables = [];
+    var connections = [];
+
+    app.get('/api/table', function (req, res) {
+        res.json(tables);
+    });
+
     var server = app.listen(5000, function () {
     });
+
+    var sendEvent = function (event) {
+        console.log('<<event>>', JSON.stringify(event));
+        event.type = 'EVENT';
+        connections.forEach(function (connection) {
+            connection.write(JSON.stringify(event));
+        });
+    };
+
+    var websocket = sockjs.createServer({sockjs_url: 'sockjs.min.js'});
+    websocket.on('connection', function (conn) {
+
+        var username = '';
+
+        connections.push(conn);
+        console.log('[new] connections: ' + connections.length);
+
+        conn.on('data', function (message) {
+            message = JSON.parse(message);
+
+            if (message.type === 'COMMAND') {
+                console.log('<<command>>', JSON.stringify(message));
+
+                if (message.command === 'USER.CREATE') {
+                    username = message.data.username;
+
+                    sendEvent({
+                        command: message.command,
+                        message: 'User ' + username + ' joined.'
+                    });
+
+                } else if (message.command === 'TABLE.CREATE') {
+                    tables.push({
+                        owner: username,
+                        players: []
+                    });
+                    sendEvent({
+                        command: message.command,
+                        message: 'New table created by ' + username + '.',
+                        data: {
+                            tableId: tables.length - 1
+                        }
+                    });
+
+                } else if (message.command === 'TABLE.JOIN') {
+                    var table = tables[message.data.tableId];
+                    if (table.owner !== username && table.players.filter(function (player) {
+                            return player === username;
+                        }).length === 0) {
+                        table.players.push(username);
+                    }
+                    sendEvent({
+                        command: message.command,
+                        message: 'User ' + username + ' joined the table.',
+                        data: {
+                            tableId: message.data.tableId
+                        }
+                    });
+
+                } else if (message.command === 'GAME.UPDATE') {
+                    var table = tables[message.data.tableId];
+                    sendEvent({
+                        command: message.command,
+                        message: 'Updated game.',
+                        data: {
+                            tableId: message.data.tableId,
+                            players: message.data.players,
+                            table: message.data.table,
+                            results: message.data.results
+                        }
+                    });
+
+                } else if (message.command === 'GAME.VISIBILITY') {
+                    var table = tables[message.data.tableId];
+                    sendEvent({
+                        command: message.command,
+                        message: 'Toggle visibility.',
+                        data: {
+                            tableId: message.data.tableId,
+                            handsVisible: message.data.handsVisible,
+                            scoreVisible: message.data.scoreVisible
+                        }
+                    });
+                }
+
+            }
+
+            if (message.type === 'EVENT') {
+                sendEvent(message);
+            }
+        });
+
+        conn.on('close', function () {
+            connections.splice(connections.indexOf(conn), 1);
+            console.log('[del] connections: ' + connections.length);
+        });
+
+    });
+
+    websocket.installHandlers(server, {prefix: '/ws'});
 
     gulp.watch(paths.app.templates, {interval: 500}, ['dev:build:templates']);
     gulp.watch(paths.app.scripts, {interval: 500}, ['dev:build:scripts']);

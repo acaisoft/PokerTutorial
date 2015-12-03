@@ -1,0 +1,19 @@
+<h1>Hello, {{gc.username}}</h1>
+
+<button ng-click="gc.newGame()" ng-if="gc.isOwner()">New Game</button>
+<button ng-click="gc.nextAction()" ng-if="gc.isOwner()">Next Action</button>
+<button ng-click="gc.toggleScoreVisibility()">Toggle Score Visibility</button>
+<button ng-click="gc.toggleHandsVisibility()">Toggle Hands Visibility</button>
+
+<div id="board">
+
+    <div class="players">
+        <player ng-repeat="player in gc.players" player="player" cards-visible="gc.handsVisible"
+                score-visible="gc.scoreVisible"></player>
+    </div>
+
+    <div class="table">
+        <card ng-repeat="card in gc.table.cards" card="card"></card>
+    </div>
+
+</div>

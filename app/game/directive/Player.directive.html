@@ -1,0 +1,9 @@
+<div class="player _{{player.id}}">
+
+    <h1 class="name">{{player.name}}</h1>
+
+    <card ng-repeat="card in player.cards" card="card" visible="pc.isVisible()"></card>
+
+    <player-result result="result" ng-if="scoreVisible"></player-result>
+
+</div>

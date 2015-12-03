@@ -15,6 +15,10 @@ module AppModule {
                 url: '/tables',
                 templateUrl: 'tables/Tables.html',
                 controller: 'TablesController as tc'
+            }).state('game', <ng.ui.IState>{
+                url: '/tables/:tableId/game',
+                templateUrl: 'game/Game.html',
+                controller: 'GameController as gc'
             });
 
             this.$urlRouterProvider.otherwise('/login');

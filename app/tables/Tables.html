@@ -15,8 +15,8 @@
         <td>{{table.owner}}</td>
         <td>{{table.players}}</td>
         <td>
-            <button ng-click="tc.play($index)">Play</button>
-            <button ng-click="tc.join($index)" ng-if="!tc.alreadyJoined($index)">Join</button>
+            <button ng-click="tc.play($index)" ng-if="tc.alreadyJoined($index)">Play</button>
+            <button ng-click="tc.join($index)" ng-if="!tc.alreadyJoined($index) && table.players.length < 3">Join</button>
         </td>
     </tr>
     </tbody>
